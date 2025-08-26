@@ -3,10 +3,10 @@ awsAccount: "829734435862"
 awsRegion: "us-east-1"        
 
 bucket:
-  name: "cfn-bucket-s3-srm"   
+  name: "quicksight-source-s3-bc-cfn"   
   versioned: true
 
 lambda:
-  functionName: "my-cfn-lambda"
+  functionName: "quicksight-export-assets-lambda-cfn"
   runtime: "python3.10"
   timeout: 180

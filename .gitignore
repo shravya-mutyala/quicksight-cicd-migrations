@@ -3,6 +3,11 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# CDK output directory
+cdk.out/
+.cdk.out/
+cdk.out
+
 # C extensions
 *.so
 
