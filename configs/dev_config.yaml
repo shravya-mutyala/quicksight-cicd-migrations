@@ -1,0 +1,12 @@
+stackName: infra-dev
+awsAccount: "829734435862"    
+awsRegion: "us-east-1"        
+
+bucket:
+  name: "cfn-bucket-s3-srm"   
+  versioned: true
+
+lambda:
+  functionName: "my-cfn-lambda"
+  runtime: "python3.10"
+  timeout: 180
