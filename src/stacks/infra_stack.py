@@ -54,3 +54,5 @@ class InfraStack(Stack):
         CfnOutput(self, "BucketArnOut", value=backend.bucket.bucket_arn)
         CfnOutput(self, "LambdaNameOut", value=backend.func.function_name)
         CfnOutput(self, "LambdaArnOut", value=backend.func.function_arn)
+        CfnOutput(self, "LambdaExecRoleArnOut", value=backend.func.role.role_arn)
+

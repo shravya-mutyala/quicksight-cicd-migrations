@@ -1,5 +1,5 @@
-stackName: infra-dev
-awsAccount: "829734435862"    
+stackName: quicksight-migrations-infra-dev
+awsAccount: "648867426675"    
 awsRegion: "us-east-1"        
 
 bucket:
@@ -10,3 +10,12 @@ lambda:
   functionName: "quicksight-export-assets-lambda-cfn"
   runtime: "python3.10"
   timeout: 180
+
+# NEW: target account/bucket (where you want the files written)
+target:
+  awsAccount: "265466609227"           
+  awsRegion:  "us-east-1"
+  bucket:
+    name: "quicksight-asset-bundles-target-cfn"
+    versioned: true
+  allowPutObjectAcl: false  
