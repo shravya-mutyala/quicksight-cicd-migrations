@@ -3,6 +3,7 @@ import aws_cdk as cdk
 from src.config.load import load_config
 from src.stacks.infra_stack import InfraStack
 from src.stacks.target_bucket_stack import TargetBucketStack
+from src.stacks.target_lambda_stack import TargetLambdaStack
 
 app = cdk.App()
 
@@ -40,4 +41,15 @@ if target_cfg:
         allow_put_object_acl=bool(target_cfg.get("allowPutObjectAcl", False)),
     )
 
+    # NEW target lambda stack (uses same target_env & target_cfg)
+    TargetLambdaStack(
+        app,
+        f'{cfg["stackName"]}-target-lambda',
+        env=target_env,
+        bucket_name=target_cfg["bucket"]["name"],
+        target_account=target_cfg["awsAccount"],   # ← pass in
+        qs_region=cfg["awsRegion"]
+    )
+
 app.synth()
+
