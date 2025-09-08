@@ -28,6 +28,12 @@ wheels/
 *.egg
 MANIFEST
 
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
 # Environment variables and secrets
 .env
 .env.local
@@ -53,3 +59,7 @@ logs/
 # AWS
 .aws/
 aws-exports.js
+
+# Temporary files
+*.tmp
+*.temp
