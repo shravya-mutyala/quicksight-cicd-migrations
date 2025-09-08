@@ -1,12 +1,14 @@
 from aws_cdk import (
     Stack,
+    Duration,
     CfnOutput,
     aws_s3 as s3,
     aws_iam as iam,
+    aws_lambda as _lambda,
 )
 from constructs import Construct
 
-class TargetBucketStack(Stack):
+class TargetStack(Stack):
     def __init__(
         self,
         scope: Construct,
@@ -17,6 +19,8 @@ class TargetBucketStack(Stack):
         source_put_principal_arn: str | None = None,
         target_prefix: str = "bundles/",
         allow_put_object_acl: bool = False,
+        target_account: str,
+        qs_region: str,
         **kwargs,
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -26,7 +30,7 @@ class TargetBucketStack(Stack):
         if not target_prefix.endswith("/"):
             target_prefix += "/"
 
-        # Create the bucket in the TARGET account
+        # Create the S3 bucket in the TARGET account
         self.target_bucket = s3.Bucket(
             self, "TargetBucket",
             bucket_name=bucket_name,
@@ -52,4 +56,25 @@ class TargetBucketStack(Stack):
                 )
             )
 
+        # Create the target Lambda function
+        self.target_function = _lambda.Function(
+            self, "TargetWorkerFn",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="index.handler",
+            code=_lambda.Code.from_asset("lambda_src/target_worker"),
+            timeout=Duration.seconds(60),
+            environment={
+                "BUCKET_NAME": self.target_bucket.bucket_name,
+                "TARGET_ACCOUNT": str(target_account),
+                "QS_REGION": str(qs_region),
+            },
+        )
+
+        # Grant the Lambda function only read/list permissions to the bucket
+        self.target_bucket.grant_read(self.target_function)
+
+        # Outputs
         CfnOutput(self, "TargetBucketName", value=self.target_bucket.bucket_name)
+        CfnOutput(self, "TargetBucketArn", value=self.target_bucket.bucket_arn)
+        CfnOutput(self, "TargetLambdaName", value=self.target_function.function_name)
+        CfnOutput(self, "TargetLambdaArn", value=self.target_function.function_arn)

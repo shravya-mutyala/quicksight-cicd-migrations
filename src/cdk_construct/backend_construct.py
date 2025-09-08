@@ -86,10 +86,14 @@ class BackendConstruct(Construct):
         # 2) If a target bucket name is configured (cross-account safe):
         #    give the Lambda principal permission to PutObject to that bucket/prefix.
         if target_bucket_name:
+            actions = ["s3:PutObject"]
+            if allow_put_object_acl:
+                actions.append("s3:PutObjectAcl")
+                
             self.func.add_to_role_policy(
                 iam.PolicyStatement(
                     effect=iam.Effect.ALLOW,
-                    actions=["s3:PutObject"],
+                    actions=actions,
                     resources=[f"arn:aws:s3:::{target_bucket_name}/{target_prefix}*"],
                 )
             )
