@@ -39,7 +39,9 @@ if target_cfg:
         target_prefix=cfg.get("lambda", {}).get("targetPrefix", "bundles/"),
         allow_put_object_acl=bool(target_cfg.get("allowPutObjectAcl", False)),
         target_account=target_cfg["awsAccount"],
-        qs_region=cfg["awsRegion"]
+        qs_region=cfg["awsRegion"],
+        lambda_timeout=target_cfg.get("lambda", {}).get("timeout", 60),
+        lambda_memory=target_cfg.get("lambda", {}).get("memory", 128),
     )
 
 app.synth()
