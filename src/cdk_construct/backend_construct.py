@@ -71,7 +71,7 @@ class BackendConstruct(Construct):
                 "BUCKET_NAME": self.bucket.bucket_name,  # legacy var (ok)
                 "QS_REGION": lambda_cfg.get("qsRegion", "us-east-1"),
                 # If no target bucket configured, fall back to source bucket
-                "TARGET_BUCKET": target_bucket_name or self.bucket.bucket_name,
+                "TARGET_BUCKET": target_bucket_name,
                 "TARGET_PREFIX": target_prefix,
                 "ALLOWED_FOLDER_IDS": lambda_cfg.get("allowedFolderIds", ""),
             },
