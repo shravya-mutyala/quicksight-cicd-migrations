@@ -1,5 +1,6 @@
 stackName: quicksight-migrations-infra-dev
-awsAccount: "648867426675"    
+# Account numbers loaded from environment variables for security
+awsAccount: "${AWS_SOURCE_ACCOUNT}"    
 awsRegion: "us-east-1"        
 
 bucket:
@@ -13,7 +14,7 @@ lambda:
 
 # NEW: target account/bucket (where you want the files written)
 target:
-  awsAccount: "265466609227"           
+  awsAccount: "${AWS_TARGET_ACCOUNT}"           
   awsRegion:  "us-east-1"
   bucket:
     name: "quicksight-asset-bundles-target-cfn"
